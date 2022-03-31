@@ -1,19 +1,4 @@
-# melhor versão
-#...............................................................................
-# criar issue + editar o que for necessário + adicionar comentários 
-
-# criando novo usuário
-# body = as.list(data.frame(email='luis.galhardo@usp.br', full_name='Luis Galhardo',
-#                           login_name='galhardo', "must_change_password"=TRUE,
-#                           password='luis',send_notify=TRUE, 
-#                           username="galhardo"))
-# 
-# POST("https://seiscode.iag.usp.br/api/v1/admin/users", 
-#      add_headers(Authorization = authorization, sudo=author), 
-#      content_type_json(), encode = "json", body=body)
-# DELETE("https://seiscode.iag.usp.br/api/v1/admin/users/teste",
-#        content_type_json(), encode = "json",
-#        add_headers(Authorization = authorization, sudo=author))
+#@ git2gitea
 
 rm(list=ls())
 
@@ -27,12 +12,10 @@ library(gitear)  # much simpler only body and title
 request_to_edit <- function(pagina, iid){
   pagina <- pagina[pagina$iid == iid, ]
   
-  userDict <- data.frame(git = c('daniel','bruno','NA','NA','emilia.brasilio', 'NA', 'jackson','NA','NA', 
-                                 'm.tchelo','NA','galhardo'), 
-                         gitea = c('Daniel','bruno', 'caiao','caio','emilia','hernan','jackson','katerine',
-                                   'mariana','mbianchi','seistech','galhardo'))
-  assignee <- userDict$gitea[userDict$git %in% unlist(pagina$assignee$username)]
+  # verificar login correspondente
+  assignee <- person_to_inform( pagina$assignee$username )
   if(length(assignee) == 0 ) assignee = ""
+  
   # ---- body ----
   body <- unlist(pagina$description)
   
@@ -93,13 +76,13 @@ person_to_inform <- function(git_user){
 #---- credentials ----
 # gitlab 
 git_url <-   'http://oldseiscode.sismo.iag.usp.br/gitlab/api/v3/projects/160/issues'
-git_token <- 'rK6tvUNWgow7dX5u4Y1n'
+git_token <- ""
 issue <- paste0(git_url,'?private_token=', git_token)
 #comments <- 'http://oldseiscode.sismo.iag.usp.br/gitlab/api/v3/projects/160/issues/118/notes?private_token=rK6tvUNWgow7dX5u4Y1n'
 
 
 # gitea
-giteaToken <- 'd69519da6d88b1d986ad8f594cfdb54f3847587c'
+giteaToken <- ""
 url_seiscode <- 'https://seiscode.iag.usp.br/api/v1/repos/CSUSP/notepad4stations/issues'
 authorization <- paste("token", giteaToken)
 
